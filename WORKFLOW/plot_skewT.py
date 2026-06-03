@@ -92,6 +92,7 @@ def generate_all_skewts(wrf_path, city_dict):
 
             skew.ax.set_xlabel("Temperature (°C)", fontsize=10)
             skew.ax.set_ylabel("Pressure (hPa)", fontsize=10)
+            skew.ax.legend(loc='upper right', fontsize=8)
             
             plt.title(f"Skew-T Log-P Analysis For: {city_name}\nValid:{eat_time_str}", 
                       fontsize=12, fontweight='bold')
