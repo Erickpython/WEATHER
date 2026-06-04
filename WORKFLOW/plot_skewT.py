@@ -1,4 +1,5 @@
 import os
+import argparse
 import numpy as np
 import pandas as pd
 from netCDF4 import Dataset
@@ -21,7 +22,7 @@ locations = {
 }
 
 # Path to your WRF output file
-WRF_FILE = "/home/erickwambugu/WRF/run/wrfout_d01_2026-06-03_00:00:00"
+# WRF_FILE = "/home/erickwambugu/WRF/run/wrfout_d01_2026-06-03_00:00:00"
 
 def generate_all_skewts(wrf_path, city_dict):
     ncfile = Dataset(wrf_path)
@@ -105,4 +106,7 @@ def generate_all_skewts(wrf_path, city_dict):
         print(f"Done. 24 plots saved to {output_dir}")
 
 if __name__ == "__main__":
-    generate_all_skewts(WRF_FILE, locations)
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--input", required=True)
+    args = parser.parse_args()
+    generate_all_skewts(args.input, locations)
