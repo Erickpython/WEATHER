@@ -11,8 +11,8 @@ def download_gfs_india(date_str, output_path, cycle='00', forecast_hours=range(0
     base_url = 'https://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p25.pl'
 
     # India bounding box
-    toplat, bottomlat = 25, 2
-    leftlon, rightlon = 65, 87
+    toplat, bottomlat = 45, 0
+    leftlon, rightlon = 60, 105
 
     # Ensure the directory exists
     save_dir = Path(output_path)

@@ -45,13 +45,13 @@ def run_temperature_pipeline(wrf_path, output_dir):
         ts = pd.to_datetime(str(wrf_time_raw))
         return (ts + timedelta(hours=0)).strftime('%d %b %Y, %H:%M UTC')
 
-    def apply_map_features(axis):
-        axis.set_extent([lon_min, lon_max, lat_min, lat_max], crs=ccrs.PlateCarree())
-        axis.add_feature(cfeature.OCEAN, facecolor="#1a5276", zorder=0)
-        axis.add_feature(cfeature.LAKES, facecolor="#5dade2", edgecolor="#2e86c1", linewidth=0.5, zorder=10)
-        axis.add_feature(cfeature.RIVERS, edgecolor="#5dade2", linewidth=0.8, zorder=10)
-        axis.add_feature(cfeature.COASTLINE, linewidth=1.5, edgecolor="black", zorder=11)
-        axis.add_feature(cfeature.BORDERS, edgecolor="black", linewidth=1.5, zorder=11)
+    # def apply_map_features(axis):
+    #     axis.set_extent([lon_min, lon_max, lat_min, lat_max], crs=ccrs.PlateCarree())
+    #     axis.add_feature(cfeature.OCEAN, facecolor="#1a5276", zorder=0)
+    #     axis.add_feature(cfeature.LAKES, facecolor="#5dade2", edgecolor="#2e86c1", linewidth=0.5, zorder=10)
+    #     axis.add_feature(cfeature.RIVERS, edgecolor="#5dade2", linewidth=0.8, zorder=10)
+    #     axis.add_feature(cfeature.COASTLINE, linewidth=1.5, edgecolor="black", zorder=11)
+    #     axis.add_feature(cfeature.BORDERS, edgecolor="black", linewidth=1.5, zorder=11)
         
         counties.boundary.plot(ax=axis, edgecolor="black", linewidth=0.2, zorder=12)
 
@@ -96,7 +96,7 @@ def run_temperature_pipeline(wrf_path, output_dir):
 
     fig = plt.figure(figsize=(12, 14))
     ax = plt.axes(projection=ccrs.PlateCarree())
-    apply_map_features(ax)
+    # apply_map_features(ax)
     
     contour = ax.contourf(to_np(lons), to_np(lats), to_np(max_t2),
                           levels=levels, cmap=cmap, norm=norm, extend="both", 
@@ -124,7 +124,7 @@ def run_temperature_pipeline(wrf_path, output_dir):
     # --- HOURLY ANIMATION ---
     print("Generating Maximum Temperature Animation...")
     fig, ax = plt.subplots(figsize=(12, 14), subplot_kw={'projection': ccrs.PlateCarree()})
-    apply_map_features(ax)
+    # apply_map_features(ax)
 
     # colorar for animation
     sm = plt.cm.ScalarMappable(cmap=cmap, norm=norm)

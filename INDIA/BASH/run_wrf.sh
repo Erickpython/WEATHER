@@ -41,7 +41,7 @@ python "$WORKFLOW_DIR/gfs_downloader.py" --date "$TODAY_NODASH" --outdir "$GFS_F
 # --- 5. WPS PROCESSING ---
 echo "[3/7] Running WPS (Ungrib & Metgrid)..."
 cd "$WPS_DIR" || exit
-rm -f FILE:* GRIBFILE.* met_em.d01.* metgrid.log ungrib.log
+rm -f FILE:* GRIBFILE.* met_em.d01.* geo_em.d01.nc metgrid.log ungrib.log  geogrid.log
 
 csh ./link_grib.csh "$GFS_FULL_PATH/gfs.t00z.pgrb2.0p25"*
 
@@ -49,6 +49,7 @@ csh ./link_grib.csh "$GFS_FULL_PATH/gfs.t00z.pgrb2.0p25"*
 sed -i "s/start_date = .*/start_date = '${TODAY_DASH}_00:00:00',/g" namelist.wps
 sed -i "s/end_date = .*/end_date = '${TOMORROW_DASH}_00:00:00',/g" namelist.wps
 
+./geogrid.exe > log.geogrid
 ./ungrib.exe > log.ungrib
 ./metgrid.exe > log.metgrid
 

@@ -17,7 +17,7 @@ warnings.filterwarnings("ignore", category=FutureWarning)
 # Add or delete cities here as needed
 locations = {
     "Kerala": {"lat": 10, "lon": 76},
-    "location 2": {"lat": 14, "lon": 75},
+    "Mumbai": {"lat": 19.0760, "lon": 72.8777},
     # "Mombasa": {"lat": -4.0435, "lon": 39.6682},
     # "Nakuru": {"lat": -0.3031, "lon": 36.0800},
 }

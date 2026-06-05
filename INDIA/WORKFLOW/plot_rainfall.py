@@ -20,9 +20,19 @@ def run_rainfall_pipeline(wrf_path, output_dir):
     shapefile_path = "/home/erickwambugu/WEATHER/INDIA/WORKFLOW/map_json_india/GPC-BNDR-ADM-HPR-SAMPLE-IN_SHP/GPC-BNDR-ADM-HPR-SAMPLE-IN.shp"
     counties = gpd.read_file(shapefile_path)
     
-    colors = ["#c6f7d0", "#7be495", "#3ac569", "#f5f57a", "#ffb347", 
-              "#ff7043", "#ff0000", "#cc00cc", "#660066", "#ffffff"]
-    levels = [1, 5, 10, 20, 30, 40, 50, 75, 100, 150, 200]
+    colors = [
+        "#ffff99",
+        "#CECE0C",
+        "#0BFF0B",
+        "#0A7E14FF",
+        "#00b7ff",
+        "#0a2683",
+        "#f3931d",
+        "#ff0000",
+    ]
+
+
+    levels = [1, 2.5, 10, 20, 40, 70, 130, 200, 300]
     cmap = ListedColormap(colors)
     norm = BoundaryNorm(levels, cmap.N)
 
@@ -40,15 +50,15 @@ def run_rainfall_pipeline(wrf_path, output_dir):
 
     def apply_map_features(axis):
         axis.set_extent([lon_min, lon_max, lat_min, lat_max], crs=ccrs.PlateCarree())
-        axis.add_feature(cfeature.OCEAN, facecolor="#0974b3", zorder=0)
+        # axis.add_feature(cfeature.OCEAN, facecolor="white", zorder=0)
         axis.add_feature(cfeature.COASTLINE, linewidth=2, zorder=4)
         axis.add_feature(cfeature.LAND, facecolor="white", zorder=0)
-        axis.add_feature(cfeature.LAKES, facecolor="#0974b3", edgecolor="blue", alpha=0.3, zorder=1)
-        axis.add_feature(cfeature.BORDERS, edgecolor="black", linewidth=2, zorder=4)
-        axis.add_feature(cfeature.RIVERS, facecolor="#0974b3", edgecolor="blue", alpha=0.3, zorder=1)
+        # axis.add_feature(cfeature.LAKES, facecolor="#0974b3", edgecolor="blue", alpha=0.3, zorder=1)
+        # axis.add_feature(cfeature.BORDERS, edgecolor="black", linewidth=2, zorder=4)
+        # axis.add_feature(cfeature.RIVERS, facecolor="#0974b3", edgecolor="blue", alpha=0.3, zorder=1)
 
 
-        counties.boundary.plot(ax=axis, edgecolor="black", linewidth=0.3, zorder=5)
+        counties.boundary.plot(ax=axis, edgecolor="black", linewidth=2, zorder=5)
 
         # for idx, row in counties.iterrows():
         #     if 'NAME_LANG1' in row and pd.notnull(row['NAME_LANG1']):
@@ -98,12 +108,13 @@ def run_rainfall_pipeline(wrf_path, output_dir):
     
     rain_end = getvar(ncfile, "RAINC", timeidx=-1) + getvar(ncfile, "RAINNC", timeidx=-1)
     rain_total = rain_end - rain_start_var
+    rain_total = np.ma.masked_less(to_np(rain_total), 1.0)
     
     contour = ax.contourf(to_np(lons), to_np(lats), to_np(rain_total),
                           levels=levels, cmap=cmap, norm=norm, extend="max", 
-                          transform=ccrs.PlateCarree(), zorder=2, alpha=0.8)
+                          transform=ccrs.PlateCarree(), zorder=2, alpha=0.9)
     
-    plt.colorbar(contour, ax=ax, orientation="horizontal", pad=0.03, shrink=0.8, 
+    plt.colorbar(contour, ax=ax, orientation="vertical", pad=0.02, shrink=0.7, 
                  label="Total Rainfall Accumulation (mm)")
     
     start_time_eat = format_eat_time(getvar(ncfile, "Times", timeidx=0).values)
